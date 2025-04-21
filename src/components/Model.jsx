@@ -52,6 +52,21 @@ const Model = () => {
     gsap.to("#heading", { y: 0, opacity: 1 });
   }, []);
 
+  // Guard againstcanvas re-rendering fail
+  const [isWebGLAvailable, setIsWebGLAvailable] = useState(true);
+
+  useEffect(() => {
+    try {
+      const canvas = document.createElement("canvas");
+      const gl =
+        canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+      if (!gl) throw new Error("WebGL not supported");
+    } catch (err) {
+      console.error("WebGL unavailable:", err);
+      setIsWebGLAvailable(false);
+    }
+  }, []);
+
   return (
     <section className="common-padding">
       <div className="screen-max-width">
@@ -81,7 +96,7 @@ const Model = () => {
               size={size}
             />
 
-            <Canvas
+            {/* <Canvas
               className="w-full h-full"
               style={{
                 position: "fixed",
@@ -94,7 +109,24 @@ const Model = () => {
               eventSource={document.getElementById("root")}
             >
               <View.Port />
-            </Canvas>
+            </Canvas> */}
+
+            {isWebGLAvailable && (
+              <Canvas
+                className="w-full h-full"
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  overflow: "hidden",
+                }}
+                eventSource={document.getElementById("root")}
+              >
+                <View.Port />
+              </Canvas>
+            )}
           </div>
 
           <div className="mx-auto w-full">
