@@ -3,7 +3,7 @@ import { OrbitControls, PerspectiveCamera, View } from "@react-three/drei";
 import * as THREE from "three";
 import Lights from "./Lights";
 import Loader from "./Loader";
-import Model from "./Iphone";
+import Model from "./iphoneModel";
 import { Suspense } from "react";
 
 const ModelView = ({
